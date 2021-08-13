@@ -137,7 +137,6 @@ def get_new_data():
             for each_resp in someUplinks:
                 someJSON = each_resp["result"];
                 uplink_message = someJSON["uplink_message"];
-
                 received = someJSON["received_at"];
                 lat = uplink_message["decoded_payload"].get("latitude", "");
                 lon = uplink_message["decoded_payload"].get("longitude", "");
