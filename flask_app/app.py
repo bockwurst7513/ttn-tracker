@@ -134,9 +134,7 @@ def get_new_data():
             theJSON = "{\"data\": [" + response.text.replace("\n\n", ",")[:-1] + "]}";
             someJSON = json.loads(theJSON)
             someUplinks = someJSON["data"]
-            #logger.info(someUplinks)
             for each_resp in someUplinks:
-                #logger.info("for_each")
                 someJSON = each_resp["result"];
                 uplink_message = someJSON["uplink_message"];
 
