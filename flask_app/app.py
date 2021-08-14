@@ -9,7 +9,6 @@ from math import sqrt
 import os
 import requests
 import json
-import csv
 from apscheduler.schedulers.background import BackgroundScheduler
 from dateutil.parser import parser
 from flask import Flask
@@ -132,19 +131,19 @@ def get_new_data():
         if response.status_code != 200:
             logger.info(response.reason)
         try:
-            theJSON = "{\"data\": [" + response.text.replace("\n\n", ",")[:-1] + "]}";
-            someJSON = json.loads(theJSON)
-            someUplinks = someJSON["data"]
-            for each_resp in someUplinks:
-                someJSON = each_resp["result"];
-                uplink_message = someJSON["uplink_message"];
+            response_format = "{\"data\": [" + response.text.replace("\n\n", ",")[:-1] + "]}";
+            response_data = json.loads(response_format)
+            uplink_msg = response_data["data"]
+            for each_resp in uplink_msg:
+                response_data = each_resp["result"];
+                uplink_message = response_data["uplink_message"];
 
-                received = someJSON["received_at"];
+                received = response_data["received_at"];
                 lat = uplink_message["decoded_payload"].get("latitude", "");
                 lon = uplink_message["decoded_payload"].get("longitude", "");
                 alt = uplink_message["decoded_payload"].get("altitude", "");
                 qos = uplink_message["decoded_payload"].get("hdop", "");
-                end_device_ids = someJSON["end_device_ids"];
+                end_device_ids = response_data["end_device_ids"];
                 device = end_device_ids["device_id"];
                 rawpay = uplink_message["frm_payload"];
 
