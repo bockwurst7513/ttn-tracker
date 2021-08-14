@@ -1,4 +1,4 @@
-import datetime                                                                                                                                                                                                                                                                                                                                                                                      flask_app/app.py                                                                                                                                                                                                                                                                                                                                                                                                          import datetime
+import datetime
 import logging
 from math import atan2
 from math import cos
@@ -27,6 +27,7 @@ from config import path_db
 from config import refresh_period_seconds
 from config import start_lat
 from config import start_lon
+from config import cluster
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
@@ -122,8 +123,8 @@ def get_new_data():
         past_seconds = 604800  # 7 days, max The Things Network storage allows
 
     for each_device in devices:
-        endpoint = "https://eu1.cloud.thethings.network/api/v3/as/applications/{app}/devices/{dev}/packages/storage/uplink_message?last={time}&type=uplink_message".format(
-            app=application, dev=each_device, time="{}s".format(past_seconds))
+        endpoint = "https://{cluster_loc}.cloud.thethings.network/api/v3/as/applications/{app}/devices/{dev}/packages/storage/uplink_message?last={time}&type=uplink_message".format(
+            cluster_loc=cluster, app=application, dev=each_device, time="{}s".format(past_seconds))
         logger.info(endpoint)
         key = 'Bearer {}'.format(app_key)
         headers = {'Accept': 'text/event-stream', 'Authorization': key}
@@ -137,6 +138,7 @@ def get_new_data():
             for each_resp in someUplinks:
                 someJSON = each_resp["result"];
                 uplink_message = someJSON["uplink_message"];
+
                 received = someJSON["received_at"];
                 lat = uplink_message["decoded_payload"].get("latitude", "");
                 lon = uplink_message["decoded_payload"].get("longitude", "");
