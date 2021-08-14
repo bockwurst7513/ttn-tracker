@@ -62,7 +62,7 @@ Then log out and back in again.
 ### Clone this repository
 
 ```
-git clone https://github.com/kizniche/ttn-tracker.git
+git clone https://github.com/bockwurst7513/ttn-tracker.git
 cd ttn-tracker
 ```
 
