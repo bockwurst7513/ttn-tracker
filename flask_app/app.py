@@ -122,7 +122,7 @@ def get_new_data():
         past_seconds = 604800  # 7 days, max The Things Network storage allows
 
     for each_device in devices:
-        endpoint = "https://{cluster_loc}.cloud.thethings.network/api/v3/as/applications/{app}/devices/{dev}/packages/storage/uplink_message?last={time}&type=uplink_message".format(
+        endpoint = "https://{cluster_loc}.cloud.thethings.network/api/v3/as/applications/{app}/devices/{dev}/packages/storage/uplink_message?order=-received_at&type=uplink_message".format(
             cluster_loc=cluster, app=application, dev=each_device, time="{}s".format(past_seconds))
         logger.info(endpoint)
         key = 'Bearer {}'.format(app_key)
